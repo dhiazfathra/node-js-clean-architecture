@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AxiosHttpClient, HttpClient } from "./HttpClient";
 
-const DEFAULT_MAX_RETRIES = 10;
+const DEFAULT_MAX_RETRIES = 50;
 const DEFAULT_RETRY_DELAY = 100; // 0.1 second
 const DEFAULT_BACKOFF_FACTOR = 2;
 
