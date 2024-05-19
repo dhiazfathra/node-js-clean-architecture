@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UserUseCase } from "../../../infrastructure/use-cases/UserUseCase";
 import { User } from "../../../data/models/User";
+import Joi from "joi";
 
 export class UserController {
   private userUseCase: UserUseCase;
@@ -10,12 +11,33 @@ export class UserController {
   }
 
   async createUser(req: Request, res: Response): Promise<Response> {
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
+      fullName: Joi.string().min(3).max(30).required(),
+      dateOfBirth: Joi.date().iso().required(),
+      timezoneOffset: Joi.number().integer().required(),
+    });
+
     try {
-      const { email, fullName, dateOfBirth, timezoneOffset } = req.body;
+      const { error, value } = schema.validate(req.body);
+
+      if (error) {
+        return res
+          .status(400)
+          .json({ status: "Error", message: error.details[0].message });
+      }
+
+      const { email, fullName, dateOfBirth, timezoneOffset } = value;
+
+      const birthDate = new Date(dateOfBirth);
+      const tzAdjustedBirthDate = new Date(
+        birthDate.getTime() - timezoneOffset * 60000 // Convert minutes to milliseconds
+      );
+
       const newData = await this.userUseCase.createUser(
         email,
         fullName,
-        dateOfBirth,
+        tzAdjustedBirthDate,
         timezoneOffset
       );
       const result = {
