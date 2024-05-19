@@ -1,5 +1,6 @@
 import { User } from "../../data/models/User";
 import { UserRepository } from "../repositories/UserRepository";
+import { schedule } from "../../adapters/agenda/jobs/Scheduler";
 
 export class UserUseCase {
   constructor(private userRepository: UserRepository) {}
@@ -16,6 +17,7 @@ export class UserUseCase {
       dateOfBirth,
       timezoneOffset,
     };
+    await schedule.sendBirthdayMail({ user });
     return this.userRepository.create(user);
   }
 
