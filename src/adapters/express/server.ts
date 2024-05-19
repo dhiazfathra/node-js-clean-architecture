@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import { sampleRoutes } from "./routes/SampleRoute";
 import { ApiKeyMiddleware } from "./middleware/ApiKeyMiddleware";
+import { userRoutes } from "./routes/UserRoute";
 
 const app = express();
 const port = 3000;
@@ -15,7 +16,7 @@ app.all("/health", (_req, res) => {
   res.status(200).json({ message: "OK" });
 });
 
-app.use(ApiKeyMiddleware);
+// app.use(ApiKeyMiddleware);
 
 // Connect to MongoDB using Mongoose
 let con_string_dev = "mongodb://localhost:27018/nodejsdb";
@@ -26,6 +27,8 @@ mongoose.connect(
 
 // Routes
 app.use("/api/samples", sampleRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

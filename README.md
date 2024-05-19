@@ -33,6 +33,110 @@ docker-compose up --build -d
 
 ## How to test
 
+### POST /user
+
+#### Request
+
+```sh
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
+  -d '{ "email": "jane.doe@example.com", "fullName": "Jane Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }' \
+  http://localhost:3000/api/user
+```
+
+#### Response
+
+```jsonc
+// 201
+{
+  "status": "OK",
+  "message": "Successfully created",
+  "user": {
+    "email": "jane.doe@example.com",
+    "fullName": "Jane Doe",
+    "dateOfBirth": "1990-01-01T00:00:00.000Z",
+    "timezoneOffset": -300,
+    "_id": "664973f6de4fa93fba624da1",
+    "__v": 0,
+  },
+}
+```
+
+### GET /user
+
+#### Request
+
+```sh
+curl -X GET \
+  -H 'api-token: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
+  http://localhost:3000/api/user\?email\=jane.doe@example.com
+```
+
+#### Response
+
+```jsonc
+// 200
+{
+  "email": "jane.doe@example.com",
+  "fullName": "Jane Doe",
+  "dateOfBirth": "1990-01-01T00:00:00.000Z",
+  "timezoneOffset": -300,
+}
+```
+
+### DELETE /user
+
+#### Request
+
+```sh
+
+```
+
+#### Response
+
+```jsonc
+// 204
+{
+  "status": "OK",
+  "message": "User deleted",
+  "user": {
+    "email": "jane.doe@example.com",
+    "fullName": "Jane Doe",
+    "dateOfBirth": "1990-01-01T00:00:00.000Z",
+    "timezoneOffset": -300,
+  },
+}
+```
+
+### POST /user
+
+#### Request
+
+```sh
+curl -X PUT \
+  -H "Content-Type: application/json" \
+  -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
+  -d '{ "email": "jane.doe@example.com", "fullName": "John Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }' \
+  http://localhost:3000/api/user
+```
+
+#### Response
+
+```jsonc
+// 201
+{
+  "status": "OK",
+  "message": "User updated",
+  "user": {
+    "email": "jane.doe@example.com",
+    "fullName": "John Doe",
+    "dateOfBirth": "1990-01-01T00:00:00.000Z",
+    "timezoneOffset": -300,
+  },
+}
+```
+
 ### /health
 
 #### Request
@@ -67,7 +171,7 @@ curl -X POST \
 #### Response
 
 ```jsonc
-// 200
+// 201
 {
   "status": "OK",
   "message": "Successfully created",
