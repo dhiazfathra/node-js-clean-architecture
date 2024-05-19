@@ -48,6 +48,10 @@ export const schedule = {
       nextBirthdayUTC,
       data.user.timezoneOffset
     );
-    await agenda.every(cronExpression, "send-birthday-mail", data);
+    await agenda.every(
+      cronExpression,
+      `send-birthday-mail-to-${data.user.email}`,
+      data
+    );
   },
 };
