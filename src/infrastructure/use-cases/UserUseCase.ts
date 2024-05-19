@@ -46,9 +46,12 @@ export class UserUseCase {
       email,
       updatedUser
     );
-    return updatedUserDocument
-      ? this.mapUserDocumentToUser(updatedUserDocument)
-      : null;
+    if (updatedUserDocument) {
+      const user = this.mapUserDocumentToUser(updatedUserDocument);
+      await schedule.sendBirthdayMail({ user });
+      return user;
+    }
+    return null;
   }
 
   private mapUserDocumentToUser(userDocument: any): User {
