@@ -1,32 +1,37 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AxiosHttpClient, HttpClient } from "./HttpClient";
 
-const DEFAULT_MAX_RETRIES = 3;
-const DEFAULT_RETRY_DELAY = 1000; // 1 second
+const DEFAULT_MAX_RETRIES = 10;
+const DEFAULT_RETRY_DELAY = 100; // 0.1 second
+const DEFAULT_BACKOFF_FACTOR = 2;
 
 export class AxiosRetryClient extends AxiosHttpClient {
   private readonly maxRetries: number;
   private readonly retryDelay: number;
+  private readonly backoffFactor: number;
   private readonly instance: AxiosInstance;
 
   constructor(
     maxRetries = DEFAULT_MAX_RETRIES,
-    retryDelay = DEFAULT_RETRY_DELAY
+    retryDelay = DEFAULT_RETRY_DELAY,
+    backoffFactor = DEFAULT_BACKOFF_FACTOR
   ) {
     super();
     this.maxRetries = maxRetries;
     this.retryDelay = retryDelay;
+    this.backoffFactor = backoffFactor;
     this.instance = axios.create();
 
     this.instance.interceptors.response.use(
       (response) => response,
-      (error) => this.handleRetry(error, this.instance)
+      (error) => this.handleRetry(error, this.instance, this.retryDelay)
     );
   }
 
   private async handleRetry(
     error: any,
     instance: AxiosInstance,
+    retryDelay: number,
     retryCount = 0
   ): Promise<AxiosResponse> {
     if (retryCount >= this.maxRetries) {
@@ -34,10 +39,10 @@ export class AxiosRetryClient extends AxiosHttpClient {
       throw error;
     }
 
-    // Wait for the specified retry delay
-    await new Promise((resolve) => setTimeout(resolve, this.retryDelay));
+    // Wait for the specified retry delay with exponential backoff
+    const delay = retryDelay * Math.pow(this.backoffFactor, retryCount);
+    await new Promise((resolve) => setTimeout(resolve, delay));
 
-    // Retry the original request
     return instance.request(error.config);
   }
 
