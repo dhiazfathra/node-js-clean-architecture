@@ -9,7 +9,7 @@ postUser() {
     -H "Content-Type: application/json" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
     -d '{ "email": "jane.doe@example.com", "fullName": "Jane Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }'
-  echo "Posted new user: jane.doe@example.com"
+  echo -e "\nPosted new user: jane.doe@example.com\n"
 }
 
 getUser() {
@@ -17,7 +17,7 @@ getUser() {
   curl -X GET \
     "$URL/user?email=jane.doe@example.com" \
     -H 'api-token: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H='
-  echo "Retrieved user: jane.doe@example.com"
+  echo -e "\nRetrieved user: jane.doe@example.com\n"
 }
 
 deleteUser() {
@@ -26,7 +26,7 @@ deleteUser() {
     "$URL/user?email=jane.doe@example.com" \
     -H "Content-Type: application/json" \
     -d '{ "email": "jane.doe@example.com" }'
-  echo "Deleted user: jane.doe@example.com"
+  echo -e "\nDeleted user: jane.doe@example.com\n"
 }
 
 putUser() {
@@ -36,14 +36,14 @@ putUser() {
     -H "Content-Type: application/json" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
     -d '{ "email": "jane.doe@example.com", "fullName": "John Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }'
-  echo "Updated user: jane.doe@example.com to John Doe"
+  echo -e "\nUpdated user: jane.doe@example.com to John Doe\n"
 }
 
 getHealth() {
   echo "Checking health endpoint..."
   curl -X GET \
     "$URL/health"
-  echo "Health check completed"
+  echo -e "\nHealth check completed\n"
 }
 
 postSample() {
@@ -56,7 +56,7 @@ postSample() {
       "name": "Sample Name",
       "description": "Sample Description"
     }'
-  echo "Posted new sample: Sample Name"
+  echo -e "\nPosted new sample: Sample Name\n"
 }
 
 getSamples() {
@@ -64,7 +64,7 @@ getSamples() {
   curl -X GET \
     "$URL/samples" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H='
-  echo "Retrieved all samples"
+  echo -e "\nRetrieved all samples\n"
 }
 
 # Variables
@@ -72,33 +72,33 @@ URL="http://localhost:3000/api/v1"
 
 # Testing
 
-echo "Starting script..."
+echo -e "\nStarting script...\n"
 
-echo "Step 1: Delete user if exists"
+echo -e "\nStep 1: Delete user if exists\n"
 deleteUser
 sleep 1
 
-echo "Step 2: Post new user"
+echo -e "\nStep 2: Post new user\n"
 postUser
 sleep 1
 
-echo "Step 3: Get user information"
+echo -e "\nStep 3: Get user information\n"
 getUser
 sleep 1
 
-echo "Step 4: Update user information"
+echo -e "\nStep 4: Update user information\n"
 putUser
 sleep 1
 
-echo "Step 5: Check health endpoint"
+echo -e "\nStep 5: Check health endpoint\n"
 getHealth
 sleep 1
 
-echo "Step 6: Post new sample"
+echo -e "\nStep 6: Post new sample\n"
 postSample
 sleep 1
 
-echo "Step 7: Get all samples"
+echo -e "\nStep 7: Get all samples\n"
 getSamples
 
-echo "Script finished."
+echo -e "\nScript finished.\n"
