@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { AxiosHttpClient, HttpClient } from "./HttpClient";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { AxiosHttpClient } from "./HttpClient";
 
 const DEFAULT_MAX_RETRIES = 50;
 const DEFAULT_RETRY_DELAY = 100; // 0.1 second
