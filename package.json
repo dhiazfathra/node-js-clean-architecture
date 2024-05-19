@@ -15,6 +15,7 @@
   "author": "dhiazfathra",
   "license": "MIT",
   "dependencies": {
+    "@hokify/agenda": "^6.3.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/mongoose": "^5.11.97",
