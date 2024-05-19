@@ -4,7 +4,7 @@ import cors from "cors";
 import { sampleRoutes } from "./routes/SampleRoute";
 import { ApiKeyMiddleware } from "./middleware/ApiKeyMiddleware";
 import { userRoutes } from "./routes/UserRoute";
-import { Agenda } from "@hokify/agenda";
+import Agenda from "agenda";
 
 const app = express();
 const port = 3000;
