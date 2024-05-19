@@ -1,6 +1,8 @@
 import { User } from "../../data/models/User";
 import { UserRepository } from "../repositories/UserRepository";
 import { schedule } from "../../adapters/agenda/jobs/Scheduler";
+import agenda from "../../adapters/agenda/scheduler";
+import { JobHandlers } from "../../adapters/agenda/jobs/Handlers";
 
 export class UserUseCase {
   constructor(private userRepository: UserRepository) {}
@@ -27,15 +29,18 @@ export class UserUseCase {
 
   async getUser(email: string): Promise<User | null> {
     const userDocument = await this.userRepository.get(email);
-    console.log(userDocument);
     return userDocument ? this.mapUserDocumentToUser(userDocument) : null;
   }
 
   async deleteUser(email: string): Promise<User | null> {
     const deletedUserDocument = await this.userRepository.delete(email);
-    return deletedUserDocument
-      ? this.mapUserDocumentToUser(deletedUserDocument)
-      : null;
+
+    if (deletedUserDocument) {
+      const user = this.mapUserDocumentToUser(deletedUserDocument);
+      agenda.cancel({ name: `send-birthday-mail-to-${user.email}` });
+      return user;
+    }
+    return null;
   }
 
   async updateUser(
