@@ -5,7 +5,6 @@ import { sampleRoutes } from "./routes/SampleRoute";
 import { ApiKeyMiddleware } from "./middleware/ApiKeyMiddleware";
 import { userRoutes } from "./routes/UserRoute";
 import { mongoConnectionString } from "../../data/constants/Config";
-import { digitalEnvisionClient } from "../axios/DigitalEnvisionClient";
 const app = express();
 const port = 3000;
 
@@ -30,9 +29,4 @@ app.use("/api/user", userRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
-});
-
-digitalEnvisionClient.sendEmail({
-  email: "test@digitalenvision.com.au",
-  message: "Test Message",
 });
