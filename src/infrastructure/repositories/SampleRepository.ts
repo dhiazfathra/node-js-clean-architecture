@@ -12,7 +12,7 @@ const SampleSchema = new Schema({
 const SampleModel = mongoose.model<ISampleDocument>("Sample", SampleSchema);
 
 export class SampleRepository implements IRepository<ISampleDocument> {
-  async add(sample: Sample): Promise<ISampleDocument> {
+  async create(sample: Sample): Promise<ISampleDocument> {
     const newSample = new SampleModel(sample);
     return await newSample.save();
   }

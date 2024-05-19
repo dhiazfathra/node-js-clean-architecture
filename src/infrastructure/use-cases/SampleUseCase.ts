@@ -9,7 +9,7 @@ export class SampleUseCase {
       name,
       description,
     };
-    return this.sampleRepository.add(sample);
+    return this.sampleRepository.create(sample);
   }
 
   async getAllSamples(): Promise<Sample[]> {

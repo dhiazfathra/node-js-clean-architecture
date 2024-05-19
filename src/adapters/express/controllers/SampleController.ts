@@ -17,7 +17,7 @@ export class SampleController {
         message: "Successfully created",
         sample: newData,
       };
-      res.status(200).json(result);
+      res.status(201).json(result);
     } catch (error) {
       console.error("Error creating user:", error);
       res
