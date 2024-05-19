@@ -121,11 +121,10 @@ export class UserController {
           message: "User deleted",
           user: deletedUser,
         });
-      } else {
-        return res
-          .status(404)
-          .json({ status: "Not Found", message: "User not found" });
       }
+      return res
+        .status(404)
+        .json({ status: "Not Found", message: "User not found" });
     } catch (error) {
       console.error("Error deleting user:", error);
       return res

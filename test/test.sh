@@ -101,4 +101,9 @@ sleep 1
 echo -e "\nStep 7: Get all samples\n"
 getSamples
 
+
+echo -e "\nClean up: Delete user if exists\n"
+deleteUser
+sleep 1
+
 echo -e "\nScript finished.\n"
