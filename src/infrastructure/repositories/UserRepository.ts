@@ -26,9 +26,6 @@ export class UserRepository implements IRepository<IUserDocument> {
 
   async get(email: string): Promise<IUserDocument | null> {
     const user = await UserModel.findOne({ email });
-    console.log(user);
-    console.log(email);
-
     return user;
   }
 
