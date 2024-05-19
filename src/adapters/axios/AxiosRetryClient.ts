@@ -34,16 +34,18 @@ export class AxiosRetryClient extends AxiosHttpClient {
     retryDelay: number,
     retryCount = 0
   ): Promise<AxiosResponse> {
-    if (retryCount >= this.maxRetries) {
-      // Maximum retries reached, throw the error
-      throw error;
+    if (
+      error.response?.status >= 500 &&
+      error.response?.status < 600 &&
+      retryCount < this.maxRetries
+    ) {
+      // Retry only on 5xx errors and within the maximum number of retries
+      // Wait for the specified retry delay with exponential backoff
+      const delay = retryDelay * Math.pow(this.backoffFactor, retryCount);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return instance.request(error.config);
     }
-
-    // Wait for the specified retry delay with exponential backoff
-    const delay = retryDelay * Math.pow(this.backoffFactor, retryCount);
-    await new Promise((resolve) => setTimeout(resolve, delay));
-
-    return instance.request(error.config);
+    throw error; // If it's not a 5xx error or reached the maximum retries, throw the error
   }
 
   async post<T>(url: string, data: any): Promise<AxiosResponse<T>> {
