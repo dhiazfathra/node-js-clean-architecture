@@ -1,11 +1,11 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { AxiosHttpClient } from "./HttpClient";
+import { HttpClient } from "./HttpClient";
 
 const DEFAULT_MAX_RETRIES = 50;
 const DEFAULT_RETRY_DELAY = 100; // 0.1 second
 const DEFAULT_BACKOFF_FACTOR = 2;
 
-export class AxiosRetryClient extends AxiosHttpClient {
+export class AxiosRetryClient implements HttpClient {
   private readonly maxRetries: number;
   private readonly retryDelay: number;
   private readonly backoffFactor: number;
@@ -16,12 +16,10 @@ export class AxiosRetryClient extends AxiosHttpClient {
     retryDelay = DEFAULT_RETRY_DELAY,
     backoffFactor = DEFAULT_BACKOFF_FACTOR
   ) {
-    super();
     this.maxRetries = maxRetries;
     this.retryDelay = retryDelay;
     this.backoffFactor = backoffFactor;
     this.instance = axios.create();
-
     this.instance.interceptors.response.use(
       (response) => response,
       (error) => this.handleRetry(error, this.instance, this.retryDelay)

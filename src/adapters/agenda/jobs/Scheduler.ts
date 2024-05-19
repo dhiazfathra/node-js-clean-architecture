@@ -2,6 +2,7 @@ import { JobAttributesData } from "agenda";
 import { User } from "../../../data/models/User";
 import { agenda } from "../scheduler";
 import moment from "moment";
+import { JobHandlers } from "./Handlers";
 
 interface CreateEmail extends JobAttributesData {
   user: User;
@@ -78,6 +79,10 @@ export const schedule = {
     const cronExpression = getCronExpressionFromDate(
       nextBirthdayUTC,
       data.user.timezoneOffset
+    );
+    agenda.define(
+      `send-birthday-mail-to-${data.user.email}`,
+      JobHandlers.sendBirthdayEmail
     );
     await agenda.every(
       cronExpression,

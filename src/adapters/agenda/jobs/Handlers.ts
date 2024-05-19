@@ -1,9 +1,9 @@
 import { User } from "../../../data/models/User";
+import { AxiosRetryClient } from "../../axios/AxiosRetryClient";
 import {
   DigitalEnvisionClient,
   IDigitalEnvisionClient,
 } from "../../axios/digital-envision/DigitalEnvisionClient";
-import { AxiosHttpClient } from "../../axios/HttpClient";
 
 export const JobHandlers = {
   sendBirthdayEmail: async (
@@ -11,7 +11,7 @@ export const JobHandlers = {
     done: () => void
   ) => {
     const { data } = job.attrs;
-    const httpClient = new AxiosHttpClient();
+    const httpClient = new AxiosRetryClient();
     const digitalEnvisionClient: IDigitalEnvisionClient =
       new DigitalEnvisionClient(httpClient);
     digitalEnvisionClient.sendEmail({
