@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+import { AxiosRetryClient } from "./AxiosRetryClient";
 import { axiosInstance } from "./AxiosConfig";
 
 export interface HttpClient {
@@ -10,3 +11,5 @@ export class AxiosHttpClient implements HttpClient {
     return axiosInstance.post<T>(url, data);
   }
 }
+
+export const axiosRetryClient = new AxiosRetryClient();

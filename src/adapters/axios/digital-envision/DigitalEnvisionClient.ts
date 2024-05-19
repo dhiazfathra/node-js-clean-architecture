@@ -3,14 +3,14 @@ import {
   SendEmailRequest,
   SendEmailResponse,
 } from "../../../data/models/Email";
-import { HttpClient } from "../HttpClient";
+import { HttpClient, axiosRetryClient } from "../HttpClient";
 
 export interface IDigitalEnvisionClient {
   sendEmail(req: SendEmailRequest): Promise<SendEmailResponse>;
 }
 
 export class DigitalEnvisionClient implements IDigitalEnvisionClient {
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient = axiosRetryClient) {}
 
   async sendEmail(req: SendEmailRequest): Promise<SendEmailResponse> {
     const url = `${basePath}/${sendEmailPath}`;
