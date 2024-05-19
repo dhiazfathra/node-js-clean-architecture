@@ -4,67 +4,102 @@
 
 postUser() {
   echo "Posting a new user..."
-  curl -X POST \
+  response=$(curl -s -X POST \
     "$URL/user" \
     -H "Content-Type: application/json" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
-    -d '{ "email": "jane.doe@example.com", "fullName": "Jane Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }'
-  echo -e "\nPosted new user: jane.doe@example.com\n"
+    -d '{ "email": "jane.doe@example.com", "fullName": "Jane Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }')
+  echo "$response"
+  if [[ "$response" == *'"status":"Created"'* ]]; then
+    echo -e "\nPosted new user: jane.doe@example.com - SUCCESS\n"
+  else
+    echo -e "\nFailed to post new user: jane.doe@example.com - FAILURE\n"
+  fi
 }
 
 getUser() {
   echo "Retrieving user information..."
-  curl -X GET \
+  response=$(curl -s -X GET \
     "$URL/user?email=jane.doe@example.com" \
-    -H 'api-token: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H='
-  echo -e "\nRetrieved user: jane.doe@example.com\n"
+    -H 'api-token: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=')
+  echo "$response"
+  if [[ "$response" == *'"email":"jane.doe@example.com"'* ]]; then
+    echo -e "\nRetrieved user: jane.doe@example.com - SUCCESS\n"
+  else
+    echo -e "\nFailed to retrieve user: jane.doe@example.com - FAILURE\n"
+  fi
 }
 
 deleteUser() {
   echo "Deleting user..."
-  curl -X DELETE \
+  response=$(curl -s -X DELETE \
     "$URL/user?email=jane.doe@example.com" \
     -H "Content-Type: application/json" \
-    -d '{ "email": "jane.doe@example.com" }'
-  echo -e "\nDeleted user: jane.doe@example.com\n"
+    -d '{ "email": "jane.doe@example.com" }')
+  echo "$response"
+  if [[ "$response" == *'"status":"No Content"'* || "$response" == *'"status":"Not Found"'* ]]; then
+    echo -e "\nDeleted user: jane.doe@example.com - SUCCESS\n"
+  else
+    echo -e "\nFailed to delete user: jane.doe@example.com - FAILURE\n"
+  fi
 }
 
 putUser() {
   echo "Updating user information..."
-  curl -X PUT \
+  response=$(curl -s -X PUT \
     "$URL/user" \
     -H "Content-Type: application/json" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
-    -d '{ "email": "jane.doe@example.com", "fullName": "John Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }'
-  echo -e "\nUpdated user: jane.doe@example.com to John Doe\n"
+    -d '{ "email": "jane.doe@example.com", "fullName": "John Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }')
+  echo "$response"
+  if [[ "$response" == *'"status":"OK"'* ]]; then
+    echo -e "\nUpdated user: jane.doe@example.com to John Doe - SUCCESS\n"
+  else
+    echo -e "\nFailed to update user: jane.doe@example.com - FAILURE\n"
+  fi
 }
 
 getHealth() {
   echo "Checking health endpoint..."
-  curl -X GET \
-    "$URL/health"
-  echo -e "\nHealth check completed\n"
+  response=$(curl -s -X GET \
+    "$URL/health")
+  echo "$response"
+  if [[ "$response" == *'"message":"OK"'* ]]; then
+    echo -e "\nHealth check completed - SUCCESS\n"
+  else
+    echo -e "\nHealth check failed - FAILURE\n"
+  fi
 }
 
 postSample() {
   echo "Posting a new sample..."
-  curl -X POST \
+  response=$(curl -s -X POST \
     "$URL/samples" \
     -H 'Content-Type: application/json' \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
     -d '{
       "name": "Sample Name",
       "description": "Sample Description"
-    }'
-  echo -e "\nPosted new sample: Sample Name\n"
+    }')
+  echo "$response"
+  if [[ "$response" == *'"status":"OK"'* ]]; then
+    echo -e "\nPosted new sample: Sample Name - SUCCESS\n"
+  else
+    echo -e "\nFailed to post new sample: Sample Name - FAILURE\n"
+  fi
 }
 
 getSamples() {
   echo "Retrieving all samples..."
-  curl -X GET \
+  response=$(curl -s -X GET \
     "$URL/samples" \
-    -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H='
-  echo -e "\nRetrieved all samples\n"
+    -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=')
+  echo "$response"
+  if [[ "$response" == *'["_id"'* ]]; then
+    echo -e "\nRetrieved all samples - SUCCESS\n"
+  else
+    echo -e "\nFailed to retrieve samples - FAILURE\n"
+  fi
 }
 
 # Variables
@@ -78,31 +113,31 @@ echo -e "\nStep 1: Delete user if exists\n"
 deleteUser
 sleep 1
 
-echo -e "\nStep 2: Post new user\n"
+echo -e "\n\nStep 2: Post new user\n"
 postUser
 sleep 1
 
-echo -e "\nStep 3: Get user information\n"
+echo -e "\n\nStep 3: Get user information\n"
 getUser
 sleep 1
 
-echo -e "\nStep 4: Update user information\n"
+echo -e "\n\nStep 4: Update user information\n"
 putUser
 sleep 1
 
-echo -e "\nStep 5: Check health endpoint\n"
+echo -e "\n\nStep 5: Check health endpoint\n"
 getHealth
 sleep 1
 
-echo -e "\nStep 6: Post new sample\n"
+echo -e "\n\nStep 6: Post new sample\n"
 postSample
 sleep 1
 
-echo -e "\nStep 7: Get all samples\n"
+echo -e "\n\nStep 7: Get all samples\n"
 getSamples
 
 
-echo -e "\nClean up: Delete user if exists\n"
+echo -e "\n\nClean up: Delete user if exists\n"
 deleteUser
 sleep 1
 
