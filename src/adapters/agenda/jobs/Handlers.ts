@@ -16,7 +16,7 @@ export const JobHandlers = {
       new DigitalEnvisionClient(httpClient);
     digitalEnvisionClient.sendEmail({
       email: data.email,
-      message: `Hey, ${data.fullName} it’s your birthday`,
+      message: `Hey, ${data.firstName} ${data.lastName} it’s your birthday`,
     });
     done();
   },

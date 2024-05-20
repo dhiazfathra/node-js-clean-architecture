@@ -13,7 +13,8 @@ export class UserController {
   async createUser(req: Request, res: Response): Promise<Response> {
     const schema = Joi.object({
       email: Joi.string().email().required(),
-      fullName: Joi.string().min(3).max(30).required(),
+      firstName: Joi.string().min(3).max(30).required(),
+      lastName: Joi.string().min(3).max(30).required(),
       dateOfBirth: Joi.date().iso().required(),
       timezoneOffset: Joi.number().integer().required(),
     });
@@ -27,7 +28,7 @@ export class UserController {
           .json({ status: "Error", message: error.details[0].message });
       }
 
-      const { email, fullName, dateOfBirth, timezoneOffset } = value;
+      const { email, firstName, lastName, dateOfBirth, timezoneOffset } = value;
 
       const birthDate = new Date(dateOfBirth);
       const tzAdjustedBirthDate = new Date(
@@ -36,7 +37,8 @@ export class UserController {
 
       const newData = await this.userUseCase.createUser(
         email,
-        fullName,
+        firstName,
+        lastName,
         tzAdjustedBirthDate,
         timezoneOffset
       );

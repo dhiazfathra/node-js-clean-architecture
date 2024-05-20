@@ -41,7 +41,7 @@ postUser() {
     "$URL/user" \
     -H "Content-Type: application/json" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
-    -d '{ "email": "jane.doe@example.com", "fullName": "Jane Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }')
+    -d '{ "email": "jane.doe@example.com", "firstName": "John", "lastName": "Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }')
   print_output "$response"
   if [[ "$response" == *'"status":"Created"'* ]]; then
     print_output "\nPosted new user: jane.doe@example.com - SUCCESS\n"
@@ -90,7 +90,7 @@ putUser() {
     "$URL/user" \
     -H "Content-Type: application/json" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
-    -d '{ "email": "jane.doe@example.com", "fullName": "John Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }')
+    -d '{ "email": "jane.doe@example.com", "firstName": "John", "lastName": "Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }')
   print_output "$response"
   if [[ "$response" == *'"status":"OK"'* ]]; then
     print_output "\nUpdated user: jane.doe@example.com to John Doe - SUCCESS\n"
