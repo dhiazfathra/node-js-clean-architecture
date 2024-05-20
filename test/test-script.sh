@@ -168,6 +168,19 @@ checkMongoCollection() {
   fi
 }
 
+test_agenda_job_existence() {
+  local job_name=$1
+  print_output "Checking MongoDB collection for Agenda job: $job_name"
+  response=$(mongo --quiet --eval "db.getCollection('agendaJobs').findOne({ name: '$job_name' })" mongodb://mongo-db-service.node-js-clean-architecture.orb.local/nodejsdb)
+  if [[ "$response" == *"$job_name"* ]]; then
+    print_output "\nAgenda job $job_name exists - SUCCESS\n"
+    increment_success
+  else
+    print_output "\nAgenda job $job_name does not exist - FAILURE\n"
+    increment_failure
+  fi
+}
+
 # Display help message
 show_help() {
   echo "Usage: ./test/test-script.sh [options]"
@@ -253,6 +266,10 @@ print_output "\n\nStep 8: Check MongoDB collections\n"
 checkMongoCollection "agendaJobs" '{"name": "send-birthday-mail"}' "Agenda job: send-birthday-mail"
 checkMongoCollection "samples" '{"name": "Sample Name"}' "Sample: Sample Name"
 checkMongoCollection "users" '{"email": "rai29@example.com"}' "User: rai29@example.com"
+sleep 1
+
+print_output "\n\nStep 9: Check for the existence of the Agenda job 'send-birthday-mail'\n"
+test_agenda_job_existence "send-birthday-mail-to-rai29@example.com"
 sleep 1
 
 print_output "\n\nClean up: Delete user if exists\n"
