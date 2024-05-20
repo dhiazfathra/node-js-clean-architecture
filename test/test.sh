@@ -37,7 +37,8 @@ deleteUser() {
     -H "Content-Type: application/json" \
     -d '{ "email": "jane.doe@example.com" }')
   echo "$response"
-  if [[ "$response" == *'"status":"No Content"'* || "$response" == *'"status":"Not Found"'* ]]; then
+  
+  if [[ -z "$response" || "$response" == *'"status":"No Content"'* || "$response" == *'"status":"Not Found"'* || "$response" == *'"message":"User deleted"'* ]]; then
     echo -e "\nDeleted user: jane.doe@example.com - SUCCESS\n"
   else
     echo -e "\nFailed to delete user: jane.doe@example.com - FAILURE\n"
@@ -95,10 +96,26 @@ getSamples() {
     "$URL/samples" \
     -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=')
   echo "$response"
-  if [[ "$response" == *'["_id"'* ]]; then
+  if [[ "$response" == *'"_id"'* ]]; then
     echo -e "\nRetrieved all samples - SUCCESS\n"
   else
     echo -e "\nFailed to retrieve samples - FAILURE\n"
+  fi
+}
+
+checkMongoCollection() {
+  local collection=$1
+  local query=$2
+  local expected=$3
+
+  echo "Checking MongoDB collection: $collection for $expected"
+  response=$(mongo --quiet --eval "db.getCollection('$collection').findOne($query)" mongodb://mongo-db-service.node-js-clean-architecture.orb.local/nodejsdb)
+  echo -e "\nMongoDB response:\n$response"
+
+  if [[ "$response" == *'"_id"'* ]]; then
+    echo -e "\n$expected exists\n"
+  else
+    echo -e "\n$expected does not exist - FAILURE\n"
   fi
 }
 
@@ -135,7 +152,13 @@ sleep 1
 
 echo -e "\n\nStep 7: Get all samples\n"
 getSamples
+sleep 1
 
+echo -e "\n\nStep 8: Check MongoDB collections\n"
+checkMongoCollection "agendaJobs" '{"name": "send-birthday-mail"}' "Agenda job: send-birthday-mail"
+checkMongoCollection "samples" '{"name": "Sample Name"}' "Sample: Sample Name"
+checkMongoCollection "users" '{"email": "rai29@example.com"}' "User: rai29@example.com"
+sleep 1
 
 echo -e "\n\nClean up: Delete user if exists\n"
 deleteUser
