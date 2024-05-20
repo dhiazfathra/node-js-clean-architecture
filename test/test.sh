@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Functions
-
 postUser() {
   echo "Posting a new user..."
   response=$(curl -s -X POST \
@@ -123,7 +122,6 @@ checkMongoCollection() {
 URL="http://localhost:3000/api/v1"
 
 # Testing
-
 echo -e "\nStarting script...\n"
 
 echo -e "\nStep 1: Delete user if exists\n"
