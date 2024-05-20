@@ -3,6 +3,6 @@ export interface SendEmailRequest {
   message: string;
 }
 export interface SendEmailResponse {
-  name: string;
-  description: string;
+  message: string;
+  sentTime?: Date | string;
 }
