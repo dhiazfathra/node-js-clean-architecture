@@ -41,7 +41,7 @@ docker-compose up --build -d
 curl -X POST \
   -H "Content-Type: application/json" \
   -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
-  -d '{ "email": "jane.doe@example.com", "fullName": "Jane Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }' \
+  -d '{ "email": "jane.doe@example.com", "firstName": "John", "lastName": "Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }' \
   http://localhost:3000/api/user
 ```
 
@@ -54,7 +54,8 @@ curl -X POST \
   "message": "Successfully created",
   "user": {
     "email": "jane.doe@example.com",
-    "fullName": "Jane Doe",
+    "firstName": "John",
+    "lastName": "Doe",
     "dateOfBirth": "1990-01-01T00:00:00.000Z",
     "timezoneOffset": -300,
     "_id": "664973f6de4fa93fba624da1",
@@ -79,7 +80,8 @@ curl -X GET \
 // 200
 {
   "email": "jane.doe@example.com",
-  "fullName": "Jane Doe",
+    "firstName": "John",
+    "lastName": "Doe",
   "dateOfBirth": "1990-01-01T00:00:00.000Z",
   "timezoneOffset": -300,
 }
@@ -102,7 +104,8 @@ curl -X GET \
   "message": "User deleted",
   "user": {
     "email": "jane.doe@example.com",
-    "fullName": "Jane Doe",
+    "firstName": "John",
+    "lastName": "Doe",
     "dateOfBirth": "1990-01-01T00:00:00.000Z",
     "timezoneOffset": -300,
   },
@@ -117,7 +120,7 @@ curl -X GET \
 curl -X PUT \
   -H "Content-Type: application/json" \
   -H 'api-key: eyd28GYiwdH6YUsd7GUihga/BSOWjsgfOhwj290Rj1H=' \
-  -d '{ "email": "jane.doe@example.com", "fullName": "John Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }' \
+  -d '{ "email": "jane.doe@example.com", "firstName": "John", "lastName": "Doe", "dateOfBirth": "1990-01-01", "timezoneOffset": -300 }' \
   http://localhost:3000/api/user
 ```
 
@@ -130,7 +133,8 @@ curl -X PUT \
   "message": "User updated",
   "user": {
     "email": "jane.doe@example.com",
-    "fullName": "John Doe",
+    "firstName": "John",
+    "lastName": "Doe",
     "dateOfBirth": "1990-01-01T00:00:00.000Z",
     "timezoneOffset": -300,
   },

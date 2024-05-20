@@ -6,7 +6,8 @@ interface IUserDocument extends Document, User {}
 
 const UserSchema = new Schema({
   email: { type: String, required: true, unique: true, index: true },
-  fullName: { type: String, required: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   dateOfBirth: { type: Date, required: true },
   timezoneOffset: { type: Number, required: true },
 });

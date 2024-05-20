@@ -9,13 +9,15 @@ export class UserUseCase {
 
   async createUser(
     email: string,
-    fullName: string,
+    firstName: string,
+    lastName: string,
     dateOfBirth: Date,
     timezoneOffset: number
   ): Promise<User> {
     const user: User = {
       email,
-      fullName,
+      firstName,
+      lastName,
       dateOfBirth,
       timezoneOffset,
     };
@@ -62,7 +64,8 @@ export class UserUseCase {
   private mapUserDocumentToUser(userDocument: any): User {
     return {
       email: userDocument.email,
-      fullName: userDocument.fullName,
+      firstName: userDocument.firstName,
+      lastName: userDocument.lastName,
       dateOfBirth: userDocument.dateOfBirth,
       timezoneOffset: userDocument.timezoneOffset,
     };
